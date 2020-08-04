@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pin Generator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="pin-generator half-width">
+                    <input class="form-control" id="pin-display" type="text">
+                    <button class="generate-btn" id="generate-btn-id">Generate Pin</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div id="input-section-id" class="input-section half-width">
+                    <input id="user-input-screen" class="form-control" type="text">
+                    <div class="numbers">
+                        <div class="calc-body">
+                            <div class="calc-button-row">
+                              <div class="button" onclick="insert(7)">7</div>
+                              <div class="button" onclick="insert(8)">8</div>
+                              <div class="button" onclick="insert(9)">9</div>
+                            </div>
+                            <div class="calc-button-row">
+                              <div class="button" onclick="insert(4)">4</div>
+                              <div class="button" onclick="insert(5)">5</div>
+                              <div class="button" onclick="insert(6)">6</div>
+                            </div>
+                            <div class="calc-button-row">
+                              <div class="button" onclick="insert(1)">1</div>
+                              <div class="button" onclick="insert(2)">2</div>
+                              <div class="button" onclick="insert(3)">3</div>
+                            </div>
+                            <div class="calc-button-row">
+                                <div id="delete-btn" class="button"><</div>
+                                <div class="button" onclick="insert(0)">0</div>
+                                <div id="clear-btn" class="button">C</div>
+                            </div>
+                            <div>
+                                <button type="submit" class="submit-btn" id="submit-btn-id">Submit</button>
+                                <p class="action-left"><span id="try-left-id">3</span> try left</p>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="notify-section">
+            <p class="notify" id="pin-not-match">❌ Pin Didn't Match, Please try again</p>
+            <p class="notify" id="pin-match">✅ Pin Matched... Secret door is opening for you</p>
+        </div>
+    </div>
+    <script>
+            document.getElementById("pin-not-match").style.display = "none";
+            document.getElementById("pin-match").style.display = "none";
+        document.getElementById("generate-btn-id").addEventListener("click", function(){
+            document.getElementById("pin-not-match").style.display = "none";
+            document.getElementById("pin-match").style.display = "none";
+            document.getElementById("pin-display").value = generateRand();
+        })
+
+        document.getElementById("submit-btn-id").addEventListener("click", function(){
+            const userInput = document.getElementById("user-input-screen").value;
+            let userInputPin = parseInt(userInput);
+            let pinGeneratorOutput = parseInt(document.getElementById("pin-display").value);
+            console.log(userInputPin);
+            console.log(pinGeneratorOutput);
+            if(userInputPin == pinGeneratorOutput){
+                document.getElementById("pin-match").style.display = "block";
+            }
+            else{
+                document.getElementById("pin-not-match").style.display = "block";
+                tryValue();
+            }
+            document.getElementById("user-input-screen").value = '';
+            document.getElementById("pin-display").value = '';
+        })
+
+        document.getElementById("delete-btn").addEventListener("click", function(){
+            let inputValue = document.getElementById("user-input-screen").value;
+            document.getElementById("user-input-screen").value = inputValue.substring(0, inputValue.length - 1);
+        })
+
+        document.getElementById("clear-btn").addEventListener("click", function(){
+            document.getElementById("user-input-screen").value = '';
+        })
+
+        function generateRand(){
+            let upper = 10000;
+            let lower = 999;
+            let randomNum = Math.floor(Math.random()*(upper - lower +1)) + lower;
+            //console.log(randomNum);
+            return randomNum;
+        }
+
+        function insert(num){
+            document.getElementById("user-input-screen").value = document.getElementById("user-input-screen").value + num;
+        }
+
+        function tryValue(){
+            let num1 = document.getElementById("try-left-id").innerText;
+            console.log(num1);
+            let num2 = parseInt(num1);
+            if(num2 > 1){
+                document.getElementById("try-left-id").innerText = num2 - 1;
+            }
+            else{
+                document.getElementById("input-section-id").style.display = "none";
+            }
+        }
+        
+    </script>
+</body>
+</html>
